@@ -19,19 +19,19 @@ export const paypalPaymentPlugin: IPlugin = {
       path: '/pay/paypal',
       name: 'paypal-payment',
       component: () => import('./PayPalPaymentView.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, noLayout: true }
     });
     sdk.addRoute({
       path: '/pay/paypal/success',
       name: 'paypal-success',
       component: () => import('./PayPalSuccessView.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, noLayout: true }
     });
     sdk.addRoute({
       path: '/pay/paypal/cancel',
       name: 'paypal-cancel',
       component: () => import('./PayPalCancelView.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, noLayout: true }
     });
 
     sdk.addTranslations('en', en);
