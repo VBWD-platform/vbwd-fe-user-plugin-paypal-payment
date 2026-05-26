@@ -1,4 +1,5 @@
 import type { IPlugin, IPlatformSDK } from 'vbwd-view-component';
+import { registerPaymentDataContributor } from 'vbwd-view-component';
 import { registerCheckoutPaymentMethod } from '@/registries/checkoutPaymentMethods';
 import en from './locales/en.json';
 import de from './locales/de.json';
@@ -47,6 +48,30 @@ export const paypalPaymentPlugin: IPlugin = {
     // Agnostic post-checkout dispatch: tell core to hop here after invoice creation.
     registerCheckoutPaymentMethod('paypal', {
       redirectPath: (invoiceId) => `/pay/paypal?invoice=${invoiceId}`,
+    });
+
+    // PaymentDataBlock contributor: render the ``paypal`` namespace inside the
+    // shared "Payment data" block on invoice-detail. The backend paypal plugin
+    // writes ``invoice.metadata.paypal = {order_id, capture_id, …}`` on
+    // capture via the agnostic ``emit_payment_captured(metadata=…)`` seam.
+    registerPaymentDataContributor('paypal', {
+      label: 'PayPal transaction',
+      format: (data) => {
+        const paypalData = (data ?? {}) as {
+          capture_id?: string;
+          order_id?: string;
+          sale_id?: string;
+          subscription_id?: string;
+        };
+        return (
+          paypalData.capture_id ||
+          paypalData.sale_id ||
+          paypalData.order_id ||
+          paypalData.subscription_id ||
+          '—'
+        );
+      },
+      order: 20,
     });
   },
 
