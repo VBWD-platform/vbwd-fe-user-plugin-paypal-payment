@@ -12,7 +12,7 @@ import zh from './locales/zh.json';
 
 export const paypalPaymentPlugin: IPlugin = {
   name: 'paypal-payment',
-  version: '26.6',
+  version: '26.6.1',
   description: 'PayPal payment processing — redirects to PayPal Checkout',
   _active: false,
 
